@@ -15,9 +15,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
-    - run: |
-        npm ci
-        npm run build
+    - name: Install project dependencies
+      run: npm ci
+    - name: Build project
+      run: npm run build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: webpack artifacts
+        path: public/
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,5 +36,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm test
+    - name: Install project dependencies
+      run: npm ci
+    - name: Test project
+      run: npm test
